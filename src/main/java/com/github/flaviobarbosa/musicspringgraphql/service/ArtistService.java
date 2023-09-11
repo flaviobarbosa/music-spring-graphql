@@ -1,5 +1,7 @@
 package com.github.flaviobarbosa.musicspringgraphql.service;
 
+import com.github.flaviobarbosa.musicspringgraphql.model.ArtistInput;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import com.github.flaviobarbosa.musicspringgraphql.model.Artist;
@@ -9,11 +11,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class ArtistService {
 
-  private static List<Artist> artists = Arrays.asList(
-      new Artist(1, "Guns N Roses"),
-      new Artist(2, "Nirvana"),
-      new Artist(3, "ACDC")
-  );
+  private static Integer LAST_ID = 3;
+
+  private static List<Artist> artists = new ArrayList<>() {{
+    add(new Artist(1, "Guns N Roses"));
+    add(new Artist(2, "Nirvana"));
+    add(new Artist(3, "ACDC"));
+  }};
 
   public Artist findById(int id) {
     return artists.stream()
@@ -26,5 +30,15 @@ public class ArtistService {
     return artists.stream()
         .filter(artist -> artist.name().toLowerCase().contains(name.toLowerCase()))
         .collect(Collectors.toList());
+  }
+
+  public Artist addArtist(ArtistInput newArist) {
+    Artist artist = new Artist(nextId(), newArist.name());
+    this.artists.add(artist);
+    return artist;
+  }
+
+  private Integer nextId() {
+    return ++LAST_ID;
   }
 }

@@ -23,5 +23,4 @@ public class ArtistController {
   public List<Artist> findArtistByName(@Argument String name) {
     return artistService.findByName(name);
   }
-
 }

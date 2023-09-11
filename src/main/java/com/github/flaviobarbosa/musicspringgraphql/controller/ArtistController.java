@@ -17,6 +17,11 @@ public class ArtistController {
   private final ArtistService artistService;
 
   @QueryMapping
+  public List<Artist> allArtists() {
+    return artistService.getAll();
+  }
+
+  @QueryMapping
   public Artist artistById(@Argument int id) {
     return artistService.findById(id);
   }

@@ -1,5 +1,6 @@
 type Query {
     artistById(id: ID): Artist
+    artistByName(name: String): [Artist]
 }
 
 type Artist {

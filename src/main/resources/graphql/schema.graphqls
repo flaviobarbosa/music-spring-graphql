@@ -1,0 +1,8 @@
+type Query {
+    artistById(id: ID): Artist
+}
+
+type Artist {
+    id: ID
+    name: String
+}

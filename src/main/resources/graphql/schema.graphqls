@@ -9,6 +9,7 @@ type Query {
 
 type Mutation {
     addArtist(artist: ArtistInput): Artist
+    addSong(song: SongInput): Song
 }
 
 type Artist {
@@ -24,4 +25,9 @@ type Song {
 
 input ArtistInput {
     name: String!
+}
+
+input SongInput {
+    name: String!,
+    artistId: Int!
 }

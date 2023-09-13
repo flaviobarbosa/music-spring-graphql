@@ -44,4 +44,8 @@ public class ArtistService {
   public List<Artist> getAll() {
     return artists;
   }
+
+  public boolean existsById(int id) {
+    return artists.stream().anyMatch(artist -> artist.id().equals(id));
+  }
 }

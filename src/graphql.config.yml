@@ -1,4 +1,4 @@
-schema: schema.graphql
+schema: 'main/java/resources/graphql/schema.graphqls'
 documents: '**/*.graphql'
 extensions:
   endpoints:

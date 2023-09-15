@@ -1,7 +1,7 @@
 type Query {
     allArtists: [Artist]
     artistById(id: ID): Artist
-    artistByName(name: String): [Artist]
+    artistsByName(name: String): [Artist]
     songById(id: ID): Song
     songByName(name: String): [Song]
     songsByArtist(artistId: ID): [Song]

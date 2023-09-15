@@ -59,4 +59,24 @@ class ArtistControllerIT {
         });
   }
 
+  @Test
+  void findArtistsByName_ShouldReturnArtists() {
+    // language=GraphQL
+    String document = """
+          query ($name: String) {
+            artistsByName(name: $name) {
+              id
+              name
+            }
+          }
+        """;
+
+    graphQlTester.document(document)
+        .variable("name", "n")
+        .execute()
+        .path("artistsByName")
+        .entityList(Artist.class)
+        .hasSize(2);
+  }
+
 }

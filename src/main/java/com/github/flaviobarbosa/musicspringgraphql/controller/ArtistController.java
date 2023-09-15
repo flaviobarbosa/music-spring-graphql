@@ -26,7 +26,7 @@ public class ArtistController {
     return artistService.findById(id);
   }
 
-  @QueryMapping("artistByName")
+  @QueryMapping("artistsByName")
   public List<Artist> findArtistByName(@Argument String name) {
     return artistService.findByName(name);
   }

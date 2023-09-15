@@ -3,6 +3,7 @@ package com.github.flaviobarbosa.musicspringgraphql;
 import com.github.flaviobarbosa.musicspringgraphql.controller.ArtistController;
 import com.github.flaviobarbosa.musicspringgraphql.model.Artist;
 import com.github.flaviobarbosa.musicspringgraphql.service.ArtistService;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.graphql.GraphQlTest;
@@ -18,6 +19,7 @@ class ArtistControllerIT {
 
   @Test
   void findAllArtists_ShouldReturnAllArtists() {
+    // language=GraphQL
     String document = """
         query{
             allArtists {
@@ -33,4 +35,28 @@ class ArtistControllerIT {
         .entityList(Artist.class)
         .hasSize(3);
   }
+
+  @Test
+  void findArtistById_ShouldReturnArtist() {
+    // language=GraphQL
+    String document = """
+          query artistById($id: ID) {
+              artistById(id: $id) {
+                id
+                name
+              }
+            }
+        """;
+
+    graphQlTester.document(document)
+        .variable("id", 1)
+        .execute()
+        .path("artistById")
+        .entity(Artist.class)
+        .satisfies(artist -> {
+          Assertions.assertEquals(1, artist.id());
+          Assertions.assertEquals("Guns N Roses", artist.name());
+        });
+  }
+
 }

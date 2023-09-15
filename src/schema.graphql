@@ -1,0 +1,40 @@
+# This file was generated. Do not edit manually.
+
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+type Artist {
+    id: ID
+    name: String
+}
+
+type Mutation {
+    addArtist(artist: ArtistInput): Artist
+    addSong(song: SongInput): Song
+}
+
+type Query {
+    allArtists: [Artist]
+    artistById(id: ID): Artist
+    artistByName(name: String): [Artist]
+    songById(id: ID): Song
+    songByName(name: String): [Song]
+    songsByArtist(artistId: ID): [Song]
+}
+
+type Song {
+    artist: Artist
+    id: ID
+    name: String
+}
+
+input ArtistInput {
+    name: String!
+}
+
+input SongInput {
+    artistId: Int!
+    name: String!
+}

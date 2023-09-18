@@ -7,6 +7,7 @@ import com.github.flaviobarbosa.musicspringgraphql.controller.SongController;
 import com.github.flaviobarbosa.musicspringgraphql.model.Song;
 import com.github.flaviobarbosa.musicspringgraphql.service.ArtistService;
 import com.github.flaviobarbosa.musicspringgraphql.service.SongService;
+import java.util.HashMap;
 import java.util.List;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -24,6 +25,9 @@ public class SongControllerIT {
 
   @Autowired
   private GraphQlTester graphQlTester;
+
+  @Autowired
+  private SongService songService;
 
   @Test
   @Order(1)
@@ -104,5 +108,46 @@ public class SongControllerIT {
         .path("songsByArtist")
         .entityList(Song.class)
         .hasSize(2);
+  }
+
+  @Test
+  @Order(4)
+  void shouldAddNewSong() {
+    // language=Graphql
+    String document = """
+      mutation ($newSong: SongInput) {
+        addSong(song: $newSong) {
+          id
+          name
+          artist {
+            id
+            name          
+          }
+        } 
+      }
+    """;
+
+    String songName = "Live and Let Die";
+    HashMap<String, Object> variables = new HashMap<>() {{
+      put("name", songName);
+      put("artistId", GUNS_N_ROSES.id());
+    }};
+
+    int currentSongs = songService.findByArtist(GUNS_N_ROSES.id()).size();
+
+    Song song = graphQlTester.document(document)
+        .variable("newSong", variables)
+        .execute()
+        .path("addSong")
+        .entity(Song.class)
+        .get();
+
+    assertThat(song.id()).isNotNull();
+    assertThat(song.name()).isEqualTo(songName);
+    assertThat(song.artist().id()).isEqualTo(GUNS_N_ROSES.id());
+
+    int newNumberOfSongs = songService.findByArtist(GUNS_N_ROSES.id()).size();
+
+    assertThat(newNumberOfSongs).isEqualTo(currentSongs + 1);
   }
 }

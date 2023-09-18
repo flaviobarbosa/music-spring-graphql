@@ -1,5 +1,10 @@
 package com.github.flaviobarbosa.musicspringgraphql.service;
 
+import static com.github.flaviobarbosa.musicspringgraphql.service.ArtistService.AC_DC;
+import static com.github.flaviobarbosa.musicspringgraphql.service.ArtistService.GUNS_N_ROSES;
+import static com.github.flaviobarbosa.musicspringgraphql.service.ArtistService.NIRVAVA;
+
+import com.github.flaviobarbosa.musicspringgraphql.model.Artist;
 import com.github.flaviobarbosa.musicspringgraphql.model.Song;
 import com.github.flaviobarbosa.musicspringgraphql.model.SongInput;
 import java.util.ArrayList;
@@ -15,12 +20,12 @@ public class SongService {
   private static Integer LAST_ID = 6;
 
   private final List<Song> songs = new ArrayList<>() {{
-    add(new Song(1, "Welcome to the jungle", 1));
-    add(new Song(2, "Smells like teen spirit", 2));
-    add(new Song(3, "Back in black", 3));
-    add(new Song(4, "Patience", 1));
-    add(new Song(5, "Come as you are", 2));
-    add(new Song(6, "TNT", 3));
+    add(new Song(1, "Welcome to the jungle", GUNS_N_ROSES));
+    add(new Song(2, "Smells like teen spirit", NIRVAVA));
+    add(new Song(3, "Back in black", AC_DC));
+    add(new Song(4, "Patience", GUNS_N_ROSES));
+    add(new Song(5, "Come as you are", NIRVAVA));
+    add(new Song(6, "TNT", AC_DC));
   }};
 
   private final ArtistService artistService;
@@ -40,7 +45,7 @@ public class SongService {
 
   public List<Song> findByArtist(int artistId) {
     return songs.stream()
-        .filter(song -> song.artistId().equals(artistId))
+        .filter(song -> song.artist().id().equals(artistId))
         .collect(Collectors.toList());
   }
 
@@ -50,7 +55,8 @@ public class SongService {
       throw new RuntimeException("Artist not found");
     }
 
-    Song song = new Song(nextId(), newSong.name(), newSong.artistId());
+    Artist artist = artistService.findById(newSong.artistId());
+    Song song = new Song(nextId(), newSong.name(), artist);
     songs.add(song);
     return song;
   }

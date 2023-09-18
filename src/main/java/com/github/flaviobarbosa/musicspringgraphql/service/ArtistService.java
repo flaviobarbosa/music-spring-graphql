@@ -12,10 +12,14 @@ public class ArtistService {
 
   private static Integer LAST_ID = 3;
 
+  public static final Artist GUNS_N_ROSES = new Artist(1, "Guns N' Roses");
+  public static final Artist NIRVAVA = new Artist(2, "Nirvana");
+  public static final Artist AC_DC = new Artist(3, "ACDC");
+
   private static final List<Artist> artists = new ArrayList<>() {{
-    add(new Artist(1, "Guns N Roses"));
-    add(new Artist(2, "Nirvana"));
-    add(new Artist(3, "ACDC"));
+    add(GUNS_N_ROSES);
+    add(NIRVAVA);
+    add(AC_DC);
   }};
 
   public Artist findById(int id) {

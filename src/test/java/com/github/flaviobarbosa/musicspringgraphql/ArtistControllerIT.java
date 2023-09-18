@@ -1,5 +1,6 @@
 package com.github.flaviobarbosa.musicspringgraphql;
 
+import static com.github.flaviobarbosa.musicspringgraphql.service.ArtistService.GUNS_N_ROSES;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -67,7 +68,7 @@ class ArtistControllerIT {
         .entity(Artist.class)
         .satisfies(artist -> {
           assertEquals(1, artist.id());
-          assertEquals("Guns N Roses", artist.name());
+          assertEquals(GUNS_N_ROSES.name(), artist.name());
         });
   }
 

@@ -7,6 +7,7 @@ import com.github.flaviobarbosa.musicspringgraphql.controller.SongController;
 import com.github.flaviobarbosa.musicspringgraphql.model.Song;
 import com.github.flaviobarbosa.musicspringgraphql.service.ArtistService;
 import com.github.flaviobarbosa.musicspringgraphql.service.SongService;
+import java.util.List;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -53,5 +54,30 @@ public class SongControllerIT {
     assertThat(song.artist().name()).isEqualTo(GUNS_N_ROSES.name());
   }
 
+  @Test
+  @Order(2)
+  void findSongByName_ShouldReturnSongs() {
+    // language=Graphql
+    String document = """
+          query ($name: String) {
+            songByName(name: $name) {
+              id
+              name
+              artist {
+                id
+                name        
+              }
+            }
+          }
+        """;
 
+    List<Song> songs = graphQlTester.document(document)
+        .variable("name", "t")
+        .execute()
+        .path("songByName")
+        .entityList(Song.class)
+        .get();
+
+    assertThat(songs).hasSize(4);
+  }
 }

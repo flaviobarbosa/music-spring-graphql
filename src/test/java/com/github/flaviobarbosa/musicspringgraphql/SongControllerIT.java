@@ -80,4 +80,29 @@ public class SongControllerIT {
 
     assertThat(songs).hasSize(4);
   }
+
+  @Test
+  @Order(3)
+  void findSongByArtist_ShouldReturnSongs() {
+    // language=Graphql
+    String document = """
+          query ($id: ID) {
+            songsByArtist(artistId: $id) {
+              id
+              name
+              artist {
+                id
+                name              
+              }
+            }
+          }
+        """;
+
+    graphQlTester.document(document)
+        .variable("id", GUNS_N_ROSES.id())
+        .execute()
+        .path("songsByArtist")
+        .entityList(Song.class)
+        .hasSize(2);
+  }
 }

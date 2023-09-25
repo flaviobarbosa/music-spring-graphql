@@ -42,6 +42,6 @@ public class SongController {
 
   @SchemaMapping
   public Artist artist(Song song) {
-    return artistService.findById(song.artist().id());
+    return artistService.findById(song.getArtist().getId());
   }
 }

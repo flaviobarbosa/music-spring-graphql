@@ -54,8 +54,8 @@ public class SongControllerIT {
         .get();
 
     assertThat(song).isNotNull();
-    assertThat(song.artist().id()).isEqualTo(GUNS_N_ROSES.id());
-    assertThat(song.artist().name()).isEqualTo(GUNS_N_ROSES.name());
+    assertThat(song.getArtist().getId()).isEqualTo(GUNS_N_ROSES.getId());
+    assertThat(song.getArtist().getName()).isEqualTo(GUNS_N_ROSES.getName());
   }
 
   @Test
@@ -103,7 +103,7 @@ public class SongControllerIT {
         """;
 
     graphQlTester.document(document)
-        .variable("id", GUNS_N_ROSES.id())
+        .variable("id", GUNS_N_ROSES.getId())
         .execute()
         .path("songsByArtist")
         .entityList(Song.class)
@@ -130,10 +130,10 @@ public class SongControllerIT {
     String songName = "Live and Let Die";
     HashMap<String, Object> variables = new HashMap<>() {{
       put("name", songName);
-      put("artistId", GUNS_N_ROSES.id());
+      put("artistId", GUNS_N_ROSES.getId());
     }};
 
-    int currentSongs = songService.findByArtist(GUNS_N_ROSES.id()).size();
+    int currentSongs = songService.findByArtist(GUNS_N_ROSES.getId()).size();
 
     Song song = graphQlTester.document(document)
         .variable("newSong", variables)
@@ -142,11 +142,11 @@ public class SongControllerIT {
         .entity(Song.class)
         .get();
 
-    assertThat(song.id()).isNotNull();
-    assertThat(song.name()).isEqualTo(songName);
-    assertThat(song.artist().id()).isEqualTo(GUNS_N_ROSES.id());
+    assertThat(song.getId()).isNotNull();
+    assertThat(song.getName()).isEqualTo(songName);
+    assertThat(song.getArtist().getId()).isEqualTo(GUNS_N_ROSES.getId());
 
-    int newNumberOfSongs = songService.findByArtist(GUNS_N_ROSES.id()).size();
+    int newNumberOfSongs = songService.findByArtist(GUNS_N_ROSES.getId()).size();
 
     assertThat(newNumberOfSongs).isEqualTo(currentSongs + 1);
   }

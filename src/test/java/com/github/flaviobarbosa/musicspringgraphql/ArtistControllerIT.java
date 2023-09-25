@@ -67,8 +67,8 @@ class ArtistControllerIT {
         .path("artistById")
         .entity(Artist.class)
         .satisfies(artist -> {
-          assertEquals(1, artist.id());
-          assertEquals(GUNS_N_ROSES.name(), artist.name());
+          assertEquals(1, artist.getId());
+          assertEquals(GUNS_N_ROSES.getName(), artist.getName());
         });
   }
 
@@ -119,8 +119,8 @@ class ArtistControllerIT {
         .path("addArtist")
         .entity(Artist.class)
         .satisfies(artist -> {
-          assertNotNull(artist.id());
-          assertEquals(artistName, artist.name());
+          assertNotNull(artist.getId());
+          assertEquals(artistName, artist.getName());
         });
 
     int newNumberOfArtists = artistService.getAll().size();
